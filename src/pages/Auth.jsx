@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router";
 
 const Auth = () => {
-  const { user, signup } = useContext(AuthContext);
+  const { user, signup, logout, login } = useContext(AuthContext);
   const [mode, setMode] = useState("signup");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   //setting up the react hook form here
   const {
@@ -14,7 +17,18 @@ const Auth = () => {
   } = useForm();
 
   function onSubmit(data) {
-    signup(data.email, data.password);
+    let result;
+    if (mode === "login") {
+      result = login(data.email, data.password);
+      navigate("/"); // Navigate to the home page after successful login
+    } else {
+      result = signup(data.email, data.password);
+    }
+    if (result.success) {
+      setError(null);
+    } else {
+      setError(result.error);
+    }
   }
 
   return (
@@ -22,10 +36,12 @@ const Auth = () => {
       <div className="container">
         <div className="auth-container">
           {user && <p>User logged in is {user.email}</p>}
+          <button onClick={() => logout()}>Logout</button>
           <h1 className="page-title">
             {mode === "signup" ? "Sign Up" : "Log In"}
           </h1>
           <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+            {error && <div className="error-message">{error}</div>}
             <div className="form-group">
               <label className="form-label" htmlFor="email">
                 Email

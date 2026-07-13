@@ -30,7 +30,21 @@ export default function AuthProvider({ children }) {
   }
 
   //function for login
-  function login() {}
+  function login(email, password) {
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const user = users.find((user) => {
+      return user.email === email && user.password === password;
+    });
+    if (!user) {
+      return {
+        success: false,
+        error: "Invalid email or password",
+      };
+    }
+    localStorage.setItem("currentUser", email);
+    setUser({ email });
+    return { success: true };
+  }
 
   function logout() {
     localStorage.removeItem("currentUser");
@@ -38,7 +52,7 @@ export default function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signup }}>
+    <AuthContext.Provider value={{ user, signup, logout, login }}>
       {children}
     </AuthContext.Provider>
   );
