@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
+import { useAuth } from "../context/AuthContext";
 
 const Auth = () => {
-  const { user, signup, logout, login } = useContext(AuthContext);
+  const { user, signup, logout, login } = useAuth();
   const [mode, setMode] = useState("signup");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -35,8 +35,6 @@ const Auth = () => {
     <div className="page">
       <div className="container">
         <div className="auth-container">
-          {user && <p>User logged in is {user.email}</p>}
-          <button onClick={() => logout()}>Logout</button>
           <h1 className="page-title">
             {mode === "signup" ? "Sign Up" : "Log In"}
           </h1>

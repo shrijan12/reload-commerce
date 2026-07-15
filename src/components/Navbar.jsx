@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext"; // Importing the useAuth hook from AuthContext
 
 const Navbar = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useAuth(); // Accessing the user and logout function from AuthContext
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -21,12 +21,12 @@ const Navbar = () => {
         <div className="navbar-auth">
           <div className="navbar-auth-links">
             {user ? (
-              <>
-                <p>Welcome {user.email}</p>
+              <div className="navbar-user">
+                <span className="navbar-greeting">Hello {user.email}</span>
                 <button className="btn btn-secondary" onClick={() => logout()}>
                   Logout
                 </button>
-              </>
+              </div>
             ) : (
               <>
                 <Link to="/auth" className="btn btn-secondary">
