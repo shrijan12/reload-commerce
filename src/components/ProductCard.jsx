@@ -1,6 +1,8 @@
 import { Link } from "react-router";
+import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ product }) {
+  const { addToCart } = useCart();
   return (
     <div className="product-card">
       <img
@@ -16,7 +18,14 @@ export default function ProductCard({ product }) {
             {" "}
             View Details
           </Link>
-          <button className="btn btn-secondary">Add to Cart</button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              addToCart(product.id);
+            }}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

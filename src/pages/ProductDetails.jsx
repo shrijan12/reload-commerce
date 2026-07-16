@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getProductById } from "../data/products";
+import { useCart } from "../context/CartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate(); // ← here
+  const { addToCart, cartItems } = useCart();
 
   const [product, setProduct] = useState("");
 
@@ -33,7 +35,12 @@ const ProductDetails = () => {
             <h2 className="product-detail-name">{product.name}</h2>
             <p className="product-detail-description">{product.description}</p>
             <p className="product-detail-price">${product.price.toFixed(2)}</p>
-            <button className="btn btn-primary">Add to Cart</button>{" "}
+            <button
+              className="btn btn-primary"
+              onClick={() => addToCart(product.id)}
+            >
+              Add to Cart
+            </button>{" "}
             <button className="btn btn-secondary" onClick={() => navigate("/")}>
               {" "}
               Go Back{" "}
