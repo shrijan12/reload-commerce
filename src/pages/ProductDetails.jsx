@@ -4,11 +4,10 @@ import { getProductById } from "../data/products";
 import { useCart } from "../context/CartContext";
 
 const ProductDetails = () => {
-  const { id } = useParams();
-  const navigate = useNavigate(); // ← here
-  const { addToCart, cartItems } = useCart();
-
   const [product, setProduct] = useState("");
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
     // Fetch product details based on the id from the URL
@@ -24,6 +23,10 @@ const ProductDetails = () => {
     return <h2>Loading...</h2>;
   }
 
+  const ifProductIsInCart = cartItems.find((item) => item.id === product.id);
+  const productQuantityLabel = ifProductIsInCart
+    ? `(${ifProductIsInCart.quantity})`
+    : "";
   return (
     <div className="page">
       <div className="container">
@@ -39,7 +42,7 @@ const ProductDetails = () => {
               className="btn btn-primary"
               onClick={() => addToCart(product.id)}
             >
-              Add to Cart
+              Add to Cart {productQuantityLabel}
             </button>{" "}
             <button className="btn btn-secondary" onClick={() => navigate("/")}>
               {" "}

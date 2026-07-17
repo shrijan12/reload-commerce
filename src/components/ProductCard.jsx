@@ -2,7 +2,11 @@ import { Link } from "react-router";
 import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
+  const ifProductIsInCart = cartItems.find((item) => item.id === product.id);
+  const productQuantityLabel = ifProductIsInCart
+    ? `(${ifProductIsInCart.quantity})`
+    : "";
   return (
     <div className="product-card">
       <img
@@ -24,7 +28,7 @@ export default function ProductCard({ product }) {
               addToCart(product.id);
             }}
           >
-            Add to Cart
+            Add to Cart {productQuantityLabel}
           </button>
         </div>
       </div>
