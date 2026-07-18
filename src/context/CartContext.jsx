@@ -47,6 +47,18 @@ export default function CartProvider({ children }) {
     );
   }
 
+  function getCartTotal() {
+    const total = cartItems.reduce((total, item) => {
+      const product = getProductById(item.id);
+      return (total = total + (product ? product.price * item.quantity : 0));
+    }, 0);
+    return total;
+  }
+
+  function clearCart() {
+    setCartItems([]);
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -55,6 +67,8 @@ export default function CartProvider({ children }) {
         getCartItemsWithProducts,
         removeFromCart,
         updateQuantity,
+        getCartTotal,
+        clearCart,
       }}
     >
       {children}
